@@ -1,15 +1,12 @@
 <template>
-<div>新的页面
-  <router-link to="/">aaa</router-link>
-  </div>  
+  <div class="app">
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style>
-
 </style>

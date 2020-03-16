@@ -16,3 +16,5 @@ new Vue({
   render: h => h(App),
   router
 }).$mount("#app");
+
+import('./lib/css/index.css')

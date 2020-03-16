@@ -1,0 +1,76 @@
+html, body, .app {
+    height: 100%;
+}
+
+/* 独立存在的初始化代码 */
+
+body,
+div,
+span,
+p,
+a,
+img,
+input,
+ul,
+li,
+i,
+strong,
+del,
+em,
+ins,
+h1,
+h2,
+h3,
+h4 {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+
+a {
+    text-decoration: none;
+    color: #666;
+}
+
+li {
+    list-style: none;
+}
+
+input {
+    border: none;
+    outline: none;
+}
+
+img {
+    border: none;
+    vertical-align: middle;
+}
+
+i,
+em {
+    font-style: normal;
+}
+
+body {
+    font-size: 12px;
+    line-height: 1;
+}
+
+.w {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.clearfix::after {
+    content: ".";
+    display: block;
+    clear: both;
+    height: 0;
+    visibility: hidden;
+}
+
+.clearfix {
+    *zoom: 1;
+}
