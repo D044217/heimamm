@@ -32,7 +32,7 @@
         </el-form-item>
         <el-form-item class="checkboxheight" prop="isCheck">
           <el-checkbox-group v-model="form.isCheck">
-            <el-checkbox name="type">
+            <el-checkbox name="type"  label="A">
               我已阅读并同意
               <el-link type="primary">用户协议</el-link>和
               <el-link type="primary">隐私条款</el-link>
@@ -82,7 +82,7 @@ export default {
         // 验证码
         logincode: "",
         // 是否阅读
-        isCheck: []
+        isCheck: ["A"]
       },
       //验证码图片
       loginImg: process.env.VUE_APP_URL + "/captcha?type=login&t=" + Date.now(),
@@ -128,10 +128,11 @@ export default {
           loginApi(this.form.phone, this.form.password, this.form.logincode).then(res => {
             if(res.data.code===200){
               this.$message.success("登录成功")
-              //跳转页面
-              this.$router.push("/index")
+              
               //登录信息保存
               window.localStorage.setItem('heimamm',res.data.data.token)
+              //跳转页面
+              this.$router.push("/index")
             }else{
               this.$message.error(res.data.message)
               
