@@ -4,11 +4,13 @@ import App from "./App.vue";
 import router from "./router/index";
 // 导入store 
 import  store from './store/index'
-//导入element_ui
+// 导入过滤器
+import "./filters/timeFilter"
+// 导入element_ui
 import ElementUI from 'element-ui';
-//导入element_ui 样式
+// 导入element_ui 样式
 import 'element-ui/lib/theme-chalk/index.css';
-//注册element_ui
+// 注册element_ui
 Vue.use(ElementUI);
 
 Vue.config.productionTip = false;
