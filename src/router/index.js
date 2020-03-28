@@ -7,14 +7,10 @@ Vue.use(vueRouter);
 //导入登录组件
 import login from "../components/login.vue";
 import index from "../components/index.vue";
-import chart from "../components/chart.vue";
-import user from "../components/user.vue";
-import question from "../components/question.vue";
-import enterprise from "../components/enterprise.vue";
-import subject from "../components/subject.vue";
+import child from "./routerChild"
 
 //导入store
-import store from '../store/index'
+import store from "../store/index";
 
 // 导入 nprogress
 import Nprogress from "../../node_modules/nprogress/nprogress";
@@ -31,34 +27,8 @@ var router = new vueRouter({
     {
       path: "/index",
       component: index,
-      children: [
-        {
-          path: "chart",
-          component: chart,
-          meta: { title: "黑马面面--数据概览" }
-        },
-        {
-          path: "user",
-          component: user,
-          meta: { title: "黑马面面--用户列表" }
-        },
-        {
-          path: "question",
-          component: question,
-          meta: { title: "黑马面面--题库列表" }
-        },
-        {
-          path: "enterprise",
-          component: enterprise,
-          meta: { title: "黑马面面--企业列表" }
-        },
-        {
-          path: "subject",
-          component: subject,
-          meta: { title: "黑马面面--学科列表" }
-        }
-      ],
-      meta: { title: "黑马面面--主页" }
+      children:child ,
+      meta: { title: "黑马面面--主页" ,roles: ["超级管理员","管理员","老师", "学生"]}
     }
   ]
 });
@@ -88,26 +58,46 @@ router.beforeEach((to, from, next) => {
       next("/login");
     } else {
       apiInfo().then(res => {
-        // 判断token的真假
-        if (res.data.code === 200) {
-          var userinfo={}
-          userinfo.username=res.data.data.username
-          userinfo.usericon=process.env.VUE_APP_URL + "/" + res.data.data.avatar;
-          //this指向不对
-          // this.$store.commit("setuserinfo",userinfo)
-          store.commit("setuserinfo",userinfo)
-          next();
-        } else if (res.data.code === 206) {
-          //token错误
-          // this.$message.error("您还没有登录,请登录");
-          // next()
+        if (res.data.data.status === 0) {
           //关闭进度条
-          Nprogress.done();
-          Message.error("您还没有登录,请登录");
-          //既会跳转  也会执行后续代码
-          // this.$router.push("/login");
-          // router.push("/login")
-          next("/login");
+          // Nprogress.done();
+          Message.error("账户被禁用.请联系管理员");
+        } else {
+          // 判断token的真假
+          if (res.data.code === 200) {
+            var userinfo = {};
+            userinfo.username = res.data.data.username;
+            userinfo.usericon =
+              process.env.VUE_APP_URL + "/" + res.data.data.avatar;
+            //this指向不对
+            // this.$store.commit("setuserinfo",userinfo)
+            store.commit("setuserinfo", userinfo);
+           
+            // Message.success("登录成功");
+            // 获取当前登录角色
+            const role = res.data.data.role
+            // 将用户角色保存到vuex中
+            store.commit("setRole",role)
+            // 判断路由
+            if(to.meta.roles.includes(role)){
+              next();
+            }else{
+              Message.error("您还没有权限访问");
+            }
+            
+           
+          } else if (res.data.code === 206) {
+            //token错误
+            // this.$message.error("您还没有登录,请登录");
+            // next()
+            //关闭进度条
+            Nprogress.done();
+            Message.error("您还没有登录,请登录");
+            //既会跳转  也会执行后续代码
+            // this.$router.push("/login");
+            // router.push("/login")
+            next("/login");
+          }
         }
       });
     }

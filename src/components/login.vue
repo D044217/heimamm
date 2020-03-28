@@ -32,7 +32,7 @@
         </el-form-item>
         <el-form-item class="checkboxheight" prop="isCheck">
           <el-checkbox-group v-model="form.isCheck">
-            <el-checkbox name="type"  label="A">
+            <el-checkbox name="type" label="A">
               我已阅读并同意
               <el-link type="primary">用户协议</el-link>和
               <el-link type="primary">隐私条款</el-link>
@@ -124,20 +124,22 @@ export default {
         // valid 就是验证后返回的数据
         if (valid) {
           // 验证通过的逻辑
-          
-          loginApi(this.form.phone, this.form.password, this.form.logincode).then(res => {
-            if(res.data.code===200){
-              this.$message.success("登录成功")
-              
+
+          loginApi(
+            this.form.phone,
+            this.form.password,
+            this.form.logincode
+          ).then(res => {
+            if (res.data.code === 200) {
+              // this.$message.success("登录成功");
+
               //登录信息保存
-              window.localStorage.setItem('heimamm',res.data.data.token)
+              window.localStorage.setItem("heimamm", res.data.data.token);
               //跳转页面
-              this.$router.push("/index")
-            }else{
-              this.$message.error(res.data.message)
-              
+              this.$router.push("/index");
+            } else {
+              this.$message.error(res.data.message);
             }
-         
           });
         } else {
           // 验证不通过的逻辑

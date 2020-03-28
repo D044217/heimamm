@@ -21,26 +21,40 @@
           class="el-menu-vertical-demo"
           :collapse="isCollapse"
         >
-          <el-menu-item index="/index/chart">
+          <template v-for="(item, index) in child">
+            <el-menu-item
+              :index="item.meta.pullpath"
+              :key="index"
+              v-if="item.meta.roles.includes($store.state.role)"
+            >
+              <i v-if="item.meta.title==='数据概览'" class="el-icon-pie-chart"></i>
+              <i v-if="item.meta.title==='用户列表'" class="el-icon-user"></i>
+              <i v-if="item.meta.title==='题库列表'" class="el-icon-edit-outline"></i>
+              <i v-if="item.meta.title==='企业列表'" class="el-icon-office-building"></i>
+              <i v-if="item.meta.title==='学科列表'" class="el-icon-notebook-2"></i>
+              <span slot="title">{{item.meta.title}}</span>
+            </el-menu-item>
+          </template>
+          <!-- <el-menu-item index="/index/chart" v-if="['管理员','老师'].includes($store.state.role)">
             <i class="el-icon-pie-chart"></i>
             <span slot="title">数据概览</span>
           </el-menu-item>
-          <el-menu-item index="/index/user">
+          <el-menu-item index="/index/user" v-if="['管理员','老师'].includes($store.state.role)">
             <i class="el-icon-user"></i>
             <span slot="title">用户列表</span>
           </el-menu-item>
-          <el-menu-item index="/index/question">
+          <el-menu-item index="/index/question" v-if="['管理员','老师','学生'].includes($store.state.role)">
             <i class="el-icon-edit-outline"></i>
             <span slot="title">题库列表</span>
           </el-menu-item>
-          <el-menu-item index="/index/enterprise">
+          <el-menu-item index="/index/enterprise" v-if="['管理员'].includes($store.state.role)">
             <i class="el-icon-office-building"></i>
             <span slot="title">企业列表</span>
           </el-menu-item>
-          <el-menu-item index="/index/subject">
+          <el-menu-item index="/index/subject" v-if="['管理员'].includes($store.state.role)">
             <i class="el-icon-notebook-2"></i>
             <span slot="title">学科列表</span>
-          </el-menu-item>
+          </el-menu-item>-->
         </el-menu>
       </el-aside>
       <el-main class="main">
@@ -52,13 +66,15 @@
 
 <script>
 //导入首页接口的js
-import {  logoutApi } from "../api/index";
+import { logoutApi } from "../api/index";
+import child from "../router/routerChild";
 export default {
   data() {
     return {
       userInfo: "", //用户信息
       imgUrl: "", //用户头像
-      isCollapse: false
+      isCollapse: false,
+      child: child
     };
   },
   created() {
@@ -70,15 +86,15 @@ export default {
     }
     // 得到用户信息
     // apiInfo().then(res => {
-      //token判断前置
-      // 判断token的真假
-      // if (res.data.code === 206) {
-      //   //token错误
-      //   this.$message.error("您还没有登录,请登录");
-      //   this.$router.push("/login");
-      //   return;
-      // }
-      // console.log(res);
+    //token判断前置
+    // 判断token的真假
+    // if (res.data.code === 206) {
+    //   //token错误
+    //   this.$message.error("您还没有登录,请登录");
+    //   this.$router.push("/login");
+    //   return;
+    // }
+    // console.log(res);
 
     //   this.userInfo = res.data.data;
     //   this.imgUrl = process.env.VUE_APP_URL + "/" + this.userInfo.avatar;

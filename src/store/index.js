@@ -9,13 +9,18 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     state:{
         username:"",
-        usericon:""
+        usericon:"",
+        role:""// 用户角色
     },
     mutations:{
         setuserinfo:function(state,payload){
             state.username=payload.username
             state.usericon=payload.usericon
+        },
+        setRole:function(state,payload){
+            state.role=payload
         }
+
     }
 })
 
