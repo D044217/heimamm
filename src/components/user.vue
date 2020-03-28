@@ -11,7 +11,6 @@
         <el-form-item label="角色">
           <el-select class="long" v-model="searchObj.role_id">
             <el-option label="所有" value></el-option>
-            <el-option label="超级管理员" :value="1"></el-option>
             <el-option label="管理员" :value="2"></el-option>
             <el-option label="老师" :value="3"></el-option>
             <el-option label="学生" :value="4"></el-option>
@@ -43,13 +42,14 @@
         </el-table-column>
         <el-table-column prop="address" label="操作" width="180">
           <template slot-scope="scope">
-            <el-link class="myLink" type="primary" @click="openEditUser(scope.row)">编辑</el-link>&nbsp;
+            <el-link v-if="['超级管理员','管理员','老师'].includes($store.state.role)" class="myLink" type="primary" @click="openEditUser(scope.row)">编辑</el-link>&nbsp;
             <el-link
               class="myLink"
               type="primary"
               @click="disable(scope.row)"
+              v-if="['管理员','老师'].includes($store.state.role)"
             >{{scope.row.status===0?"启用":"禁用"}}</el-link>&nbsp;
-            <el-link class="myLink" type="primary" @click="userDel(scope.row)">删除</el-link>
+            <el-link v-if="['超级管理员','管理员'].includes($store.state.role)" class="myLink" type="primary" @click="userDel(scope.row)">删除</el-link>
           </template>
         </el-table-column>
       </el-table>
@@ -143,6 +143,8 @@ export default {
       this.$refs.userDialog.form.role_id = "";
       this.$refs.userDialog.form.status = "";
       this.$refs.userDialog.form.remark = "";
+      // this.$refs.userDialog.$refs.form.resetFields();
+      // 无法重置没有表单校核的内容
     },
     // 切换状态
     disable(row) {
@@ -165,6 +167,10 @@ export default {
       let str = JSON.stringify(row);
       let objStr = JSON.parse(str);
       this.$refs.userDialog.form = objStr;
+      // this.$refs.userDialog.$nextTick(() => {
+      //   // 将当前行的数据源添加到页面上
+      //   this.$refs.userDialog.form = JSON.parse(JSON.stringify(row));
+      // });
     },
     // 删除用户
     userDel(row) {

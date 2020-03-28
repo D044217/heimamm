@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      :title="isEdit?'编辑企业':'新增企业'"
+      :title="isEdit?'编辑用户':'新增用户'"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
     >
@@ -16,9 +16,7 @@
           <el-input v-model="form.phone" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="角色" prop="role_id" :label-width="formLabelWidth">
-          <el-select class="long" v-model="form.role_id">
-            <el-option label="所有" value></el-option>
-            <el-option label="超级管理员" :value="1"></el-option>
+          <el-select class="long" v-model="form.role_id" placeholder="请选择">
             <el-option label="管理员" :value="2"></el-option>
             <el-option label="老师" :value="3"></el-option>
             <el-option label="学生" :value="4"></el-option>
